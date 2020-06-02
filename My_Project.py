@@ -28,48 +28,41 @@
 
 import re
 
-
-
 class Analyze_DNA_Sequence:
+    
     def __init__(self, sequence): # initializes all the attributes of the object
         self.sequence = sequence
         self.length = len(sequence)
- 
-        match = re.search(r"[^ATCGN]", self.sequence)
-        self.my_seq = []
-        if match:
-            protein_seq = self.sequence
-            self.my_seq.append("Protein")
-        else:
-            dna_seq = self.sequence
-            self.my_seq.append("DNA")
-      
-    def type_seq(self):
         
-        if self.my_seq[0] == "DNA":
-            return dna_seq
-        else:
-            return "Not a DNA sequence. Run program again with DNA sequence"
-        
-    def GC_Content(dna_seq,self):
-        c_count = dna.count('C')
-        g_count = dna.count('G')
-        GC_content = (c_count + g_count/self.length)*100
+    def GC_Content(self):
+        """Calculates the GC% of a given DNA sequence"""
+        c_count = self.sequence.count('C')
+        g_count = self.sequence.count('G')
+        GC_content = ((c_count + g_count)/self.length)*100
         return GC_content
     
     def kmer_count(self,size):
+        """Given a kmer size will calculate all the possible kmers
+        in the DNA sequence"""
         pass
 
     def Complementary(self):
+        """Gives the complementary sequence to the given DNA sequence"""
         pass
 
     def Translate(self):
+        """Gives all 6 reading frame protein sequences for given DNA sequence"""
         pass
 
-Sequence = input("Enter a DNA sequence: ")
+dna_seq = input("Enter a DNA sequence: ")
+match = re.search(r"[^ATCGN]", dna_seq)
+if match:
+    print("Not a DNA sequence. Try again with a DNA sequence")
+else:
+    dna_seq = dna_seq
+    Seq = Analyze_DNA_Sequence(dna_seq)
+    print(Seq.GC_Content())
 
-Seq = Analyze_DNA_Sequence("ATGCT")
-print(Seq.GC_Content(Seq))
 
 # Sequence = "ATGCTCGTAGAT" # Start-Leucine-Valine-Asparagine
         
