@@ -46,9 +46,15 @@ class Analyze_DNA_Sequence:
         in the DNA sequence"""
         pass
 
-    def Complementary(self):
+    def Complementary(self,direction):
         """Gives the complementary sequence to the given DNA sequence"""
-        pass
+        complementary = self.sequence.upper().replace('A','t')\
+                        .replace('T','a').replace('G','c')\
+                        .replace('C','g').upper()
+        if direction == '3-5':
+            return complementary
+        else:
+            return complementary[::-1]
 
     def Translate(self):
         """Gives all 6 reading frame protein sequences for given DNA sequence"""
@@ -62,6 +68,7 @@ else:
     dna_seq = dna_seq
     Seq = Analyze_DNA_Sequence(dna_seq)
     print(Seq.GC_Content())
+    print(Seq.Complementary('5-3'))
 
 
 # Sequence = "ATGCTCGTAGAT" # Start-Leucine-Valine-Asparagine
