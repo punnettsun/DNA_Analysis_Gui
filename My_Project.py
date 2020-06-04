@@ -36,16 +36,21 @@ class Analyze_DNA_Sequence:
         
     def GC_Content(self):
         """Calculates the GC% of a given DNA sequence"""
-        c_count = self.sequence.count('C')
-        g_count = self.sequence.count('G')
-        GC_content = ((c_count + g_count)/self.length)*100
-        return GC_content
-    
-    def kmer_count(self,size):
-        """Given a kmer size will calculate all the possible kmers
-        in the DNA sequence"""
-        pass
+        GC_content = lambda dna: (dna.count('G')+dna.count('C'))\
+                         /self.length
+        return round(GC_content(self.sequence),4)
 
+    def kmer_count(self,size):
+        """Calculates all possible kmers given a size"""
+        if size == 1:
+            return ['A','T','C','G']
+        else:
+            result = []
+            for seq in Analyze_DNA_Sequence.kmer_count(self,size-1):
+                for base in ['A','T','C','G']:
+                    result.append(seq+base)
+            return result
+    
     def Complementary(self,direction):
         """Gives the complementary sequence to the given DNA sequence"""
         complementary = self.sequence.upper().replace('A','t')\
@@ -69,7 +74,13 @@ else:
     Seq = Analyze_DNA_Sequence(dna_seq)
     print(Seq.GC_Content())
     print(Seq.Complementary('5-3'))
+    print(Seq.kmer_count(4))
 
 
-# Sequence = "ATGCTCGTAGAT" # Start-Leucine-Valine-Asparagine
-        
+
+
+
+
+
+
+
