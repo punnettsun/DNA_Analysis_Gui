@@ -63,7 +63,50 @@ class Analyze_DNA_Sequence:
 
     def Translate(self):
         """Gives all 6 reading frame protein sequences for given DNA sequence"""
-        pass
+        dna_to_protein = {
+            'ATA':'I', 'ATC':'I', 'ATT':'I', 'ATG':'M',
+            'ACA':'T', 'ACC':'T', 'ACG':'T', 'ACT':'T',
+            'AAC':'N', 'AAT':'N', 'AAA':'K', 'AAG':'K',
+            'AGC':'S', 'AGT':'S', 'AGA':'R', 'AGG':'R',
+            'CTA':'L', 'CTC':'L', 'CTG':'L', 'CTT':'L',
+            'CCA':'P', 'CCC':'P', 'CCG':'P', 'CCT':'P',
+            'CAC':'H', 'CAT':'H', 'CAA':'Q', 'CAG':'Q',
+            'CGA':'R', 'CGC':'R', 'CGG':'R', 'CGT':'R',
+            'GTA':'V', 'GTC':'V', 'GTG':'V', 'GTT':'V',
+            'GCA':'A', 'GCC':'A', 'GCG':'A', 'GCT':'A',
+            'GAC':'D', 'GAT':'D', 'GAA':'E', 'GAG':'E',
+            'GGA':'G', 'GGC':'G', 'GGG':'G', 'GGT':'G',
+            'TCA':'S', 'TCC':'S', 'TCG':'S', 'TCT':'S',
+            'TTC':'F', 'TTT':'F', 'TTA':'L', 'TTG':'L',
+            'TAC':'Y', 'TAT':'Y', 'TAA':'*', 'TAG':'*',
+            'TGC':'C', 'TGT':'C', 'TGA':'*', 'TGG':'W',
+            }
+        length = self.length
+        #{1: (M,F,G,*), 2: (C,L,D)
+        reading = {}
+        frame_1 = tuple([dna_to_protein[self.sequence[index:index+3]] for index in range(0,length,3)])
+        frame_2 = tuple([dna_to_protein[self.sequence[index:index+3]] for index in range(1,length-2,3)])
+        frame_3 = tuple([dna_to_protein[self.sequence[index:index+3]] for index in range(2,length-1,3)])
+        reverse_strand = Analyze_DNA_Sequence.Complementary(self,'5-3')
+        frame_4 = tuple([dna_to_protein[reverse_strand[index:index+3]] for index in range(0,length,3)])
+        frame_5 = tuple([dna_to_protein[reverse_strand[index:index+3]] for index in range(1,length-2,3)])
+        frame_6 = tuple([dna_to_protein[reverse_strand[index:index+3]] for index in range(2,length-1,3)])
+        #return frame_1, frame_2, frame_3, frame_4, frame_5, frame_6
+        reading['1'] = frame_1 
+        reading['2'] = frame_2
+        reading['3'] = frame_3
+        reading['4'] = frame_4
+        reading['5'] = frame_5
+        reading['6'] = frame_6
+        return reading
+        #ATGTTTGGATAG = 1. MFG*
+        #               2. CLD
+        #               3. VWI
+        #CTATCCAAACAT = 4. LSKH
+        #               5. YPN
+        #               6. IQT
+
+
 
 dna_seq = input("Enter a DNA sequence: ")
 match = re.search(r"[^ATCGN]", dna_seq)
@@ -75,6 +118,7 @@ else:
     print(Seq.GC_Content())
     print(Seq.Complementary('5-3'))
     print(Seq.kmer_count(4))
+    print(Seq.Translate())
 
 
 
