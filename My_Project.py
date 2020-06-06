@@ -1,6 +1,6 @@
 # CS_22B_Project
 # Author: Punit Sundar
-# Last Updated: May 25, 2020
+# Last Updated: June 6, 2020
 # Purpose: Write an object-oriented program for analyzing DNA sequence,
 # including CG content, k-mer counting, complemnentary sequence, and
 # translation of all 6 reading frames into protein sequences.
