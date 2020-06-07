@@ -16,15 +16,13 @@
 # 4. Translate in all 6 reading frames
     # AGTCGTAGATGATCGTAGTAGATCGTAGTAG
     # 3 in forward strand and 3 in reverse strand
-    # Make program to ask about start or end codon
 
 
 ## Warnings:
 # 1. Make sure DNA sequence does not have any odd characters
-# 2. Length is a multiple of 3 to ensure correct codon count
-# 3. Make sure k-mer size does not exceed length of the DNA sequence
-# 4. If user inputs are not the correct type or value causing exceptions
-# 5. 
+# 2. Make sure k-mer size does not exceed length of the DNA sequence
+# 3. If user inputs are not the correct type or value causing exceptions
+
 
 import re
 
@@ -82,22 +80,13 @@ class Analyze_DNA_Sequence:
             'TGC':'C', 'TGT':'C', 'TGA':'*', 'TGG':'W',
             }
         length = self.length
-        #{1: (M,F,G,*), 2: (C,L,D)
         reading = {}
-        frame_1 = tuple([dna_to_protein[self.sequence[index:index+3]] for index in range(0,length,3)])
-        frame_2 = tuple([dna_to_protein[self.sequence[index:index+3]] for index in range(1,length-2,3)])
-        frame_3 = tuple([dna_to_protein[self.sequence[index:index+3]] for index in range(2,length-1,3)])
+        for i in range(3):
+            reading['frame_'+str(i+1)] = tuple([dna_to_protein[self.sequence[index:index+3]] for index in range(i,length-2,3)])
         reverse_strand = Analyze_DNA_Sequence.Complementary(self,'5-3')
-        frame_4 = tuple([dna_to_protein[reverse_strand[index:index+3]] for index in range(0,length,3)])
-        frame_5 = tuple([dna_to_protein[reverse_strand[index:index+3]] for index in range(1,length-2,3)])
-        frame_6 = tuple([dna_to_protein[reverse_strand[index:index+3]] for index in range(2,length-1,3)])
-        #return frame_1, frame_2, frame_3, frame_4, frame_5, frame_6
-        reading['1'] = frame_1 
-        reading['2'] = frame_2
-        reading['3'] = frame_3
-        reading['4'] = frame_4
-        reading['5'] = frame_5
-        reading['6'] = frame_6
+        for i in range(3):
+            reading['frame_'+str(i+4)] = tuple([dna_to_protein[reverse_strand[index:index+3]] for index in range(i,length-2,3)])
+
         return reading
         #ATGTTTGGATAG = 1. MFG*
         #               2. CLD
