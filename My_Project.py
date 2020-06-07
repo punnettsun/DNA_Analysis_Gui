@@ -5,24 +5,7 @@
 # including CG content, k-mer counting, complemnentary sequence, and
 # translation of all 6 reading frames into protein sequences.
 
-# Given a DNA sequence, do the following:
-# 1. CG content
-    # count C's and G's to get CG content
-# 2. k-mer count
-    # User gives a k-mer count to calculate
-# 3. Complementary sequence
-    # Given the DNA sequence, give the complementary sequence
-    # Ask user if 5' to 3' or 3' to 5'
-# 4. Translate in all 6 reading frames
-    # AGTCGTAGATGATCGTAGTAGATCGTAGTAG
-    # 3 in forward strand and 3 in reverse strand
-
-
-## Warnings:
-# 1. Make sure DNA sequence does not have any odd characters
-# 2. If user inputs are not the correct type or value causing exceptions
-
-
+from tkinter import *
 import re
 
 class Analyze_DNA_Sequence:
@@ -30,7 +13,8 @@ class Analyze_DNA_Sequence:
     def __init__(self, sequence): # initializes all the attributes of the object
         self.sequence = sequence
         self.length = len(sequence)
-        
+
+    
     def GC_Content(self):
         """Calculates the GC% of a given DNA sequence"""
         GC_content = lambda dna: (dna.count('G')+dna.count('C'))\
@@ -90,23 +74,38 @@ class Analyze_DNA_Sequence:
         return reading
 
 
-dna_seq = input("Enter a DNA sequence: ")
-match = re.search(r"[^ATCG]", dna_seq)
-if match:
-    print("Letters other than A,T,C, or G are not accepted. Try again.")
-else:
-    dna_seq = dna_seq
-    Seq = Analyze_DNA_Sequence(dna_seq)
-    print(Seq.GC_Content())
-    print(Seq.Complementary('5-3'))
-    print(Seq.kmer_count(4))
-    print(Seq.Translate())
+def get_sequence():
+    sequence = entry.get()
+    match = re.search(r"[^ATCG]", sequence)
+    if match:
+        print("Letters other than A,T,C, or G are not accepted. Try again.")
+    else:
+        Seq = Analyze_DNA_Sequence(sequence)
+        gc_content = Seq.GC_Content()
+        complement = Seq.Complementary('5-3')
+        kmer = Seq.kmer_count(3)
+        reading_frames = Seq.Translate()
+        print("-----------GC%------------")
+        print(gc_content)
+        print("--------Complement--------")
+        print(complement)
+        print("-----------kmer-----------")
+        print(kmer)
+        print("----All Reading Frames----")
+        for keys,values in reading_frames.items():
+            print(keys,values)
 
 
+root = Tk()
+dna_label = Label(text = 'DNA Sequence', font=('Verdana',12,'bold'),
+                  bg='blue',fg='white')
+dna_label.grid(row=0, column=0)
 
+entry = Entry()
+entry.grid(row=0,column=1)
 
+b = Button(root, text='Enter', command = get_sequence)
+b.grid(row=0,column=2)
 
-
-
-
+mainloop()
 
