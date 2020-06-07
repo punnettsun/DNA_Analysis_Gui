@@ -20,8 +20,7 @@
 
 ## Warnings:
 # 1. Make sure DNA sequence does not have any odd characters
-# 2. Make sure k-mer size does not exceed length of the DNA sequence
-# 3. If user inputs are not the correct type or value causing exceptions
+# 2. If user inputs are not the correct type or value causing exceptions
 
 
 import re
@@ -79,6 +78,7 @@ class Analyze_DNA_Sequence:
             'TAC':'Y', 'TAT':'Y', 'TAA':'*', 'TAG':'*',
             'TGC':'C', 'TGT':'C', 'TGA':'*', 'TGG':'W',
             }
+        
         length = self.length
         reading = {}
         for i in range(3):
@@ -88,19 +88,12 @@ class Analyze_DNA_Sequence:
             reading['frame_'+str(i+4)] = tuple([dna_to_protein[reverse_strand[index:index+3]] for index in range(i,length-2,3)])
 
         return reading
-        #ATGTTTGGATAG = 1. MFG*
-        #               2. CLD
-        #               3. VWI
-        #CTATCCAAACAT = 4. LSKH
-        #               5. YPN
-        #               6. IQT
-
 
 
 dna_seq = input("Enter a DNA sequence: ")
-match = re.search(r"[^ATCGN]", dna_seq)
+match = re.search(r"[^ATCG]", dna_seq)
 if match:
-    print("Not a DNA sequence. Try again with a DNA sequence")
+    print("Letters other than A,T,C, or G are not accepted. Try again.")
 else:
     dna_seq = dna_seq
     Seq = Analyze_DNA_Sequence(dna_seq)
