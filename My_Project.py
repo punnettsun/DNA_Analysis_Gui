@@ -6,22 +6,18 @@
 # translation of all 6 reading frames into protein sequences.
 
 from tkinter import *
-from tkinter.scrolledtext import ScrolledText
 import re
 
-#tkinter add
-#1. kmer size option
+# Fix
+# 1. Incorrect kmer size value
+# 2. Delete textbox after second Enter
 
-#Warnings
-#1. Incorrect kmer size value
-
-class Analyze_DNA_Sequence:
+class Analyze_DNA_Sequence: 
     
     def __init__(self, sequence): # initializes all the attributes of the object
         self.sequence = sequence
         self.length = len(sequence)
-
-    
+  
     def GC_Content(self):
         """Calculates the GC% of a given DNA sequence"""
         GC_content = lambda dna: (dna.count('G')+dna.count('C'))\
@@ -96,40 +92,45 @@ def get_sequence():
         reading_frames = Seq.Translate()
         gc_content_text.insert(1.0,gc_content)
         complement_text.insert(END,complement)
-        reading_frames_text.insert(END,reading_frames)
+        for keys in reading_frames:
+            values = reading_frames[keys]
+            final = keys + ':' + str(values) + '\n'
+            reading_frames_text.insert(END,final)
         textbox.insert(END,kmer)
 
 root = Tk()
-root.title("DNA GUI")
+root.title("DNA to Protein")
+root.configure(background='SteelBlue4')
 
-Directions = Label(text = "Directions: Paste a DNA sequence and kmer size below. Click 'Enter'",
+Directions = Label(text = "Directions: Paste ONLY a DNA sequence and kmer size below. Then click 'Enter'",
                    font=('Verdana',12,'bold'),
-                   bg='black',fg='white',width = 55, height=5)
+                   bg='Salmon',fg='white',width = 60, height=4)
 Directions.grid(row=0,column=0,columnspan=2)
 
-my_list = ['DNA Sequence','GC%','Type Kmer Size','Complement','Reading Frames']
+my_list = ['DNA Sequence','GC%','Type Kmer Size',"5'-3' Complement",'Reading Frames']
 for i in range(1,6):
     label = Label(text = my_list[i-1], font=('Verdana',12,'bold'),
-                  fg='black',width = 25, height=5)
+                  bg='SteelBlue4',fg='white',width = 25, height=6)
     label.grid(row= i, column=0)
 
-dna_entry = Entry()
+dna_entry = Entry(bg='SteelBlue4',fg='white',width = 25)
 dna_entry.grid(row=1,column=1)
 
-gc_content_text = Text(font = ('Verdana',12), height = 1, width = 20)
+gc_content_text = Text(font = ('Verdana',12), height = 3, width = 25,bg='SteelBlue4',fg='white')
 gc_content_text.grid(row=2,column=1)
 
-kmer_size_entry = Entry()
+kmer_size_entry = Entry(bg='SteelBlue4',fg='white')
 kmer_size_entry.grid(row=3,column=1)
 
-complement_text = Text(font = ('Verdana',12), height = 1, width = 20)
+complement_text = Text(font = ('Verdana',12), height = 1, width = 25,bg='SteelBlue4',fg='white')
 complement_text.grid(row=4,column=1)
 
-reading_frames_text = Text(font = ('Verdana',12), height = 6, width = 40)
+reading_frames_text = Text(font = ('Verdana',12), height = 6, width = 25,bg='SteelBlue4',fg='white')
 reading_frames_text.grid(row=5,column=1)
 
-textbox = Text(font = ('Verdana',12), height = 6, width = 40)
+textbox = Text(font = ('Verdana',12), height = 6, width = 40,fg='white',bg='salmon')
 textbox.grid(row=7,column=1)
+textbox.insert(1.0,'KMERS: ')
 
 
 dna_button = Button(root, text='Enter', command = get_sequence)
@@ -137,4 +138,3 @@ dna_button.grid(row=6,column=0)
 
 
 mainloop()
-
