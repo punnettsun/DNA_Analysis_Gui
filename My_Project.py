@@ -1,6 +1,6 @@
 # CS_22B_Project
 # Author: Punit Sundar
-# Last Updated: June 7, 2020
+# Last Updated: June 11, 2020
 # Purpose: Write an object-oriented program for analyzing DNA sequence,
 # including CG content, k-mer counting, complemnentary sequence, and
 # translation of all 6 reading frames into protein sequences.
@@ -9,10 +9,8 @@ import sys
 from tkinter import *
 import re
 
-# Fixed
-# 1. Incorrect kmer size value
 # Still needs fixing
-# 1. Delete textbox after consecutive Enters
+# 1. Delete textbox after every 'Enter'
 
 class Analyze_DNA_Sequence: 
     
