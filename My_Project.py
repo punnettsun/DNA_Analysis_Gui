@@ -1,6 +1,6 @@
 # CS_22B_Project
 # Author: Punit Sundar
-# Last Updated: June 11, 2020
+# Last Updated: June 12, 2020
 # Purpose: Write an object-oriented program for analyzing DNA sequence,
 # including CG content, k-mer counting, complemnentary sequence, and
 # translation of all 6 reading frames into protein sequences.
@@ -9,8 +9,11 @@ import sys
 from tkinter import *
 import re
 
+# Fixed
+# 1. Clear button done
+# 2. Fixed lowercase problem
 # Still needs fixing
-# 1. Delete textbox after every 'Enter'
+# 1. Have better overall window layout
 
 class Analyze_DNA_Sequence: 
     
@@ -84,13 +87,13 @@ class Not_DNA_Sequence(Exception):
     pass
 
 def get_sequence():
-    sequence = dna_entry.get()
+    sequence = dna_entry.get().upper()
     try:
         match = re.search(r"[^ATCG]", sequence)
         if match:
             raise Not_DNA_Sequence
     except Not_DNA_Sequence:
-        textbox.insert(END,'Sequence entered in not a DNA sequence')
+        textbox.insert(END,'Sequence entered is not a DNA sequence (Only A,T,C, & G allowed). Please clear and try again.')
         sys.exit()
     try:
         kmer_size = kmer_size_entry.get()
@@ -100,13 +103,13 @@ def get_sequence():
         if kmer_size > 10:
             raise TooHigh
     except ValueError:
-        textbox.insert(END,' ValueError. Please type a number only ')
+        textbox.insert(END,' ValueError. Clear and please type a number only ')
         sys.exit()
     except TooLow:
-        textbox.insert(END,' Kmer number too low ')
+        textbox.insert(END,' Kmer number too low. Clear and type a higher number.')
         sys.exit()
     except TooHigh:
-        textbox.insert(END,' High Kmer values might cause slow processing ')
+        textbox.insert(END,' High Kmer values might cause slow processing. Clear and type lower number. ')
         sys.exit()
 
     else:
@@ -123,17 +126,32 @@ def get_sequence():
             reading_frames_text.insert(END,final)
         textbox.insert(END,' '+ str(kmer))
 
+def clear_everything():
+    dna_entry.delete(0, END)
+    dna_entry.insert(0, '')
+    gc_content_text.delete(1.0, END)
+    gc_content_text.insert(1.0, '')
+    kmer_size_entry.delete(0, END)
+    kmer_size_entry.insert(0, '')
+    complement_text.delete(1.0, END)
+    complement_text.insert(1.0, '')
+    reading_frames_text.delete(1.0, END)
+    reading_frames_text.insert(1.0, '')
+    textbox.delete(1.0, END)
+    textbox.insert(1.0, '')
+
 def tkinter_open_window():
     root = Tk()
     root.title("DNA to Protein")
     root.configure(background = 'SteelBlue4')
 
-    Directions = Label(text = "Directions: Paste ONLY a DNA sequence and kmer size below. Then click 'Enter'",
-                       font = ('Verdana',12,'bold'), bg = 'Salmon',fg = 'white', width = 60, height=4)
+    Directions = Label(text = "Directions: Paste ONLY a DNA sequence and a kmer size below & click 'Enter'.\n"+\
+                       "Click 'Clear' to clear all information.",
+                       font = ('Verdana',12,'bold'), bg = 'Salmon',fg = 'white', width = 60, height=5)
     Directions.grid(row = 0, column = 0, columnspan = 2)
 
-    my_list = ['DNA Sequence','GC%','Type Kmer Size',"5'-3' Complement",'Reading Frames']
-    for i in range(1,6):
+    my_list = ['DNA Sequence','GC%','Type Kmer Size',"5'-3' Complement",'Reading Frames','All KMERS']
+    for i in range(1,7):
         label = Label(text = my_list[i-1], font = ('Verdana',12,'bold'),bg = 'SteelBlue4', fg = 'white', width = 25, height = 6)
         label.grid(row= i, column=0)
     global dna_entry
@@ -158,13 +176,15 @@ def tkinter_open_window():
 
     global textbox
     textbox = Text(font = ('Verdana',12), height = 6, width = 40, fg = 'white', bg = 'salmon')
-    textbox.grid(row = 7, column = 1)
+    textbox.grid(row = 6, column = 1)
     textbox.insert(1.0,'')
 
 
     dna_button = Button(root, text='Enter', command = get_sequence)
-    dna_button.grid(row = 6, column = 0)
+    dna_button.grid(row = 9, column = 0)
 
+    clear_button = Button(root, text='Clear', command = clear_everything)
+    clear_button.grid(row = 9, column = 1)
 
     mainloop()
 
