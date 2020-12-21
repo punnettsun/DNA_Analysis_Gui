@@ -9,11 +9,15 @@ import sys
 from tkinter import *
 import re
 
-# Fixed
-# 1. Clear button done
-# 2. Fixed lowercase problem
 # Still needs fixing
 # 1. Have better overall window layout
+
+class TooLow(Exception):
+    pass
+class TooHigh(Exception):
+    pass
+class Not_DNA_Sequence(Exception):
+    pass
 
 class Analyze_DNA_Sequence: 
     
@@ -78,13 +82,6 @@ class Analyze_DNA_Sequence:
             reading['frame_'+str(i+4)] = tuple([dna_to_protein[reverse_strand[index:index+3]] for index in range(i,length-2,3)])
 
         return reading
-
-class TooLow(Exception):
-    pass
-class TooHigh(Exception):
-    pass
-class Not_DNA_Sequence(Exception):
-    pass
 
 def get_sequence():
     sequence = dna_entry.get().upper()
